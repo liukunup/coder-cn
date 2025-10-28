@@ -8,8 +8,7 @@ USER root
 # Install package
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
     && apk update \
-    && apk add curl unzip ca-certificates \
-    && rm -rf /var/cache/apk/* \
+    && apk add --no-cache curl unzip ca-certificates \
     && update-ca-certificates
 
 # Define the target CPU architecture for multi-platform build.
@@ -84,6 +83,11 @@ ARG HASHICORP_NULL_VERSION=3.2.4
 RUN echo  "Adding hashicorp/null v${HASHICORP_NULL_VERSION}" \
     && mkdir -p hashicorp/null && cd hashicorp/null \
     && curl -LOs https://releases.hashicorp.com/terraform-provider-null/${HASHICORP_NULL_VERSION}/terraform-provider-null_${HASHICORP_NULL_VERSION}_linux_${ARCH}.zip
+
+ARG HASHICORP_HTTP_VERSION=3.5.0
+RUN echo  "Adding hashicorp/http v${HASHICORP_HTTP_VERSION}" \
+    && mkdir -p hashicorp/http && cd hashicorp/http \
+    && curl -LOs https://releases.hashicorp.com/terraform-provider-http/${HASHICORP_HTTP_VERSION}/terraform-provider-http_${HASHICORP_HTTP_VERSION}_linux_${ARCH}.zip
 
 ARG PVE_PROVIDER_VERSION=3.0.2-rc05
 RUN echo  "Adding telmate/terraform-provider-proxmox v${PVE_PROVIDER_VERSION}" \
