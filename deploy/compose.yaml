@@ -1,0 +1,49 @@
+---
+services:
+
+  coder:
+    image: ${REGISTRY:-docker.io}/${CODER_IMAGE:-liukunup/coder:latest}
+    ports:
+      - ${CODER_EXPOSE_PORT:-7080}:7080
+    environment:
+      # URL
+      CODER_ACCESS_URL: ${CODER_ACCESS_URL}
+      CODER_WILDCARD_ACCESS_URL: ${CODER_WILDCARD_ACCESS_URL}
+      # Feature
+      CODER_TELEMETRY_ENABLE: "false"             # Disable telemetry
+      CODER_BLOCK_DIRECT: "true"                  # force SSH traffic through control plane's DERP proxy
+      CODER_DERP_SERVER_STUN_ADDRESSES: "disable" # Only use relayed connections
+      CODER_UPDATE_CHECK: "false"                 # Disable automatic update checks
+      # Service
+      CODER_HTTP_ADDRESS: "0.0.0.0:7080"
+      CODER_PG_CONNECTION_URL: "postgresql://${POSTGRES_USERNAME:-coder}:${POSTGRES_PASSWORD:?password is required}@database/${POSTGRES_DB:-coder}?sslmode=disable"
+    group_add:
+      - ${DOCKER_GROUP} # use the command `id` to get docker group on host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - coder_home:/home/coder
+    depends_on:
+      database:
+        condition: service_healthy
+
+  database:
+    image: ${REGISTRY:-docker.io}/${POSTGRES_IMAGE:-postgres:17}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USERNAME:-coder}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?password is required}
+      POSTGRES_DB: ${POSTGRES_DB:-coder}
+    volumes:
+      - coder_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USERNAME:-coder} -d ${POSTGRES_DB:-coder}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  coder_home:
+  coder_pg_data:
