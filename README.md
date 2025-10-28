@@ -2,6 +2,8 @@
 
 适合中国大陆地区使用的`Coder`镜像版本。
 
+## 快速开始
+
 ## 使用 VS Code Web
 
 ## 使用 Cursor IDE
