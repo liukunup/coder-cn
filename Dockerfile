@@ -74,6 +74,11 @@ RUN echo "Adding aws/aws v${AWS_PROVIDER_VERSION}" \
     && mkdir -p aws/aws && cd aws/aws \
     && curl -LOs https://releases.hashicorp.com/terraform-provider-aws/${AWS_PROVIDER_VERSION}/terraform-provider-aws_${AWS_PROVIDER_VERSION}_linux_${ARCH}.zip
 
+ARG ALICLOUD_PROVIDER_VERSION=1.261.0
+RUN echo "Adding aws/aws v${AWS_PROVIDER_VERSION}" \
+    && mkdir -p alicloud/alicloud && cd alicloud/alicloud \
+    && curl -LOs https://releases.hashicorp.com/terraform-provider-alicloud/${AWS_PROVIDER_VERSION}/terraform-provider-alicloud_${AWS_PROVIDER_VERSION}_linux_${ARCH}.zip
+
 ARG HASHICORP_LOCAL_VERSION=2.5.3
 RUN echo "Adding hashicorp/local v${HASHICORP_LOCAL_VERSION}" \
     && mkdir -p hashicorp/local && cd hashicorp/local \
