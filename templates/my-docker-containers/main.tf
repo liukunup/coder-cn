@@ -33,6 +33,7 @@ resource "coder_agent" "main" {
   os             = "linux"
   startup_script = <<-EOT
     #!/bin/sh
+
     set -e
 
     # Prepare user home with default files on first start.
@@ -161,8 +162,7 @@ module "vscode-web" {
   version        = "~> 1.4"
   agent_id       = coder_agent.main.id
   folder         = "/home/coder"
-  extensions     = ["github.copilot"]
-  extensions     = ["dracula-theme.theme-dracula"]
+  extensions     = ["github.copilot", "dracula-theme.theme-dracula"]
   settings       = {
     "workbench.colorTheme" = "Dracula"
   }
