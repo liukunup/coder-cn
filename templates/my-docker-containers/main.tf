@@ -142,6 +142,12 @@ module "code-server" {
 
   agent_id = coder_agent.main.id
   order    = 1
+
+  subdomain  = true
+  extensions = ["dracula-theme.theme-dracula", "github.copilot"]
+  settings   = {
+    "workbench.colorTheme" = "Dracula"
+  }
 }
 
 # See https://registry.coder.com/modules/coder/jetbrains
@@ -162,7 +168,7 @@ module "vscode-web" {
   version        = "~> 1.4"
   agent_id       = coder_agent.main.id
   folder         = "/home/coder"
-  extensions     = ["github.copilot", "dracula-theme.theme-dracula"]
+  extensions     = ["dracula-theme.theme-dracula", "github.copilot"]
   settings       = {
     "workbench.colorTheme" = "Dracula"
   }
