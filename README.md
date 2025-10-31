@@ -14,5 +14,6 @@
 
 ## 参考资料
 
-- https://coder.com/docs/install/airgap
+- [Air-gapped Deployments](https://coder.com/docs/install/airgap)
+- [Use NGINX as a Reverse Proxy](https://coder.com/docs/tutorials/reverse-proxy-nginx)
 - https://github.com/dev-easily/coder-templates
