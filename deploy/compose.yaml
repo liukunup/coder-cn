@@ -3,8 +3,6 @@ services:
 
   coder:
     image: ${REGISTRY:-docker.io}/${CODER_IMAGE:-liukunup/coder:latest}
-    ports:
-      - ${CODER_EXPOSE_PORT:-7080}:7080
     environment:
       # URL
       CODER_ACCESS_URL: ${CODER_ACCESS_URL}
@@ -15,7 +13,7 @@ services:
       CODER_DERP_SERVER_STUN_ADDRESSES: "disable" # Only use relayed connections
       CODER_UPDATE_CHECK: "false"                 # Disable automatic update checks
       # Service
-      CODER_HTTP_ADDRESS: "0.0.0.0:7080"
+      CODER_HTTP_ADDRESS: "127.0.0.1:3000"
       CODER_PG_CONNECTION_URL: "postgresql://${POSTGRES_USERNAME:-coder}:${POSTGRES_PASSWORD:?password is required}@database/${POSTGRES_DB:-coder}?sslmode=disable"
     group_add:
       - ${DOCKER_GROUP} # use the command `id` to get docker group on host
@@ -43,6 +41,14 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+  proxy:
+    image: ${REGISTRY:-docker.io}/${PROXY_IMAGE:-nginx:latest}
+    ports:
+      - ${PROXY_HTTP_PORT:-80}:80
+      - ${PROXY_HTTPS_PORT:-443}:443
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
 
 volumes:
   coder_home:
