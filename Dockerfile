@@ -55,7 +55,8 @@ WORKDIR /home/coder/.terraform.d/plugins/registry.terraform.io
 ARG GITHUB_PROXY=
 
 COPY plugin_downloader.sh plugin_downloader.sh
-RUN plugin_downloader.sh "${ARCH}" "${GITHUB_PROXY}" \
+RUN chmod +x plugin_downloader.sh \
+    && bash plugin_downloader.sh "${ARCH}" "${GITHUB_PROXY}" \
     && rm -f plugin_downloader.sh
 
 RUN chown -R coder:coder /home/coder/.terraform*
