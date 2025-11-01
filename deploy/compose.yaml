@@ -2,7 +2,7 @@
 services:
 
   coder:
-    image: ${REGISTRY:-docker.io}/${CODER_IMAGE:-liukunup/coder:latest}
+    image: ${REGISTRY:-docker.io}/${CODER_IMAGE:-liukunup/coder:latest}  # or ghcr.io/coder/coder:latest
     ports:
       - ${CODER_PORT:-7080}:7080
     environment:
